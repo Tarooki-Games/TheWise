@@ -8,6 +8,8 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class UTTInteractionComponent;
+class UAnimMontage;
 
 UCLASS()
 class THEWISE_API ATTCharacter : public ACharacter
@@ -21,10 +23,19 @@ public:
 protected:
 
 	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* SpringArmComp;
+	
+	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
 
 	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* SpringArmComp;
+	UTTInteractionComponent* InteractionComp;
+	
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UAnimMontage* AttackAnim;
 
 	// Called after the actor's components have been initialized, but before BeginPlay()
     virtual void PostInitializeComponents() override;
@@ -33,11 +44,16 @@ protected:
 	virtual void BeginPlay() override;
 	
 	void MoveForward(float Value);
+	void MoveRight(float Value);
+	
+	void PrimaryAttack();
+	
+	void PrimaryInteract();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
